@@ -1,0 +1,9 @@
+[project]
+name = "ckis"
+version = "0.1.0"
+description = "Chainable Kernel Install System"
+requires-python = ">=3.13"
+
+
+[project.scripts]
+ckis = "ckis.runner:fire"
