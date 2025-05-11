@@ -42,7 +42,6 @@ class Chain:
         self.inputs = {}
 
         self.store = artifacts.ArtifactStore()
-        self.installed = []
 
 
         # import modules
