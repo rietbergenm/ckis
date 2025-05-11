@@ -167,7 +167,7 @@ class Chain:
         return artifacts.Config(chain, *args, **kwargs)
     
     def Symbols(chain, *args, **kwargs):
-        return artifacts._Symbols(chain, *args, **kwargs)
+        return artifacts.Symbols(chain, *args, **kwargs)
 
     def Initrd(chain, *args, **kwargs):
         return artifacts.Initrd(chain, *args, **kwargs)
