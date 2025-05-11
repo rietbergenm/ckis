@@ -10,6 +10,7 @@ import tomllib
 # setting it if nothing is present makes inheriting harder
 core_opts = [
     # name      type    mand    source
+    ("boot",    "dir",  False,  "core"),
     ("esp",     "dir",  False,  "core"),
     ("sbcert",  "file", False,  "core"),
     ("sbkey",   "file", False,  "core"),

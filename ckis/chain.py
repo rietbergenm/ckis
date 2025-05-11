@@ -25,6 +25,8 @@ class Chain:
         # convenience properties
         self.name = config["name"]
 
+        self.boot = config.get("boot", pathlib.Path("/boot"))
+
         esp = config.get("esp", None)
         if esp:
             self.esp = esp
