@@ -8,7 +8,7 @@ import subprocess
 import tempfile
 
 from . import artifacts
-from .errors import ModuleError
+from .errors import ConfigError, ModuleError
 from .modules import get_module
 from .util import filter_class, to_list, to_path, search_esp_paths
 
@@ -27,12 +27,14 @@ class Chain:
 
         self.boot = config.get("boot", pathlib.Path("/boot"))
 
-        esp = config.get("esp", None)
-        if esp:
+        if esp := config.get("esp", None):
+            self.esp = esp
+        elif esp := search_esp_path():
             self.esp = esp
         else:
-            # can still return None if no common paths match (though unlikely)
-            self.esp = search_esp_paths()
+            # esp not specified and couldn't detect it
+            # highly unlikely as this requires /boot not to be present
+            raise ConfigError("Failed to determine location of the esp!")
 
 
         # only works if /etc/os-release or /usr/lib/os-release is present
