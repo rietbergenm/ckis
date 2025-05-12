@@ -1,7 +1,7 @@
 import pathlib
 import importlib.util
 
-from .config import ConfigError
+from .errors import ConfigError
 
 module_cache = {}
 
