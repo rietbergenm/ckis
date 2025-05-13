@@ -165,25 +165,17 @@ class Chain:
 
     ######## artifact classes ##########
 
+    Config = artifacts.Config
 
-    def Config(chain, *args, **kwargs):
-        return artifacts.Config(chain, *args, **kwargs)
-    
-    def Symbols(chain, *args, **kwargs):
-        return artifacts.Symbols(chain, *args, **kwargs)
+    Symbols = artifacts.Symbols
 
-    def Initrd(chain, *args, **kwargs):
-        return artifacts.Initrd(chain, *args, **kwargs)
+    Initrd = artifacts.Initrd
 
-    def Signable(chain, *args, **kwargs):
-        return artifacts.Signable(chain, *args, **kwargs)
+    Signable = artifacts.Signable
 
-    def Kernel(chain, *args, **kwargs):
-        return artifacts.Kernel(chain, *args, **kwargs)
+    Kernel = artifacts.Kernel
 
-    def Uki(chain, *args, **kwargs):
-        return artifacts.Uki(chain, *args, **kwargs)
-
+    Uki = artifacts.Uki
 
     ########### utility functions ############
     

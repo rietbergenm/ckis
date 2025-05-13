@@ -3,7 +3,7 @@ import pathlib
 from collections import UserList
 
 
-from .util import filter_class, to_path
+from .util import filter_class
 
 
 class ArtifactPath:
@@ -11,14 +11,13 @@ class ArtifactPath:
         return obj._path
 
     def __set__(self, obj, value):
-        obj._path = to_path(obj._chain.cwd, value)
+        obj._path = pathlib.Path(value).resolve()
 
 
 class Artifact:
     path = ArtifactPath()
 
-    def __init__(self, chain, path, installed=False):
-        self._chain = chain
+    def __init__(self, path, installed=False):
         self.path = path
         self.installed = installed
 
@@ -34,8 +33,8 @@ class Initrd(Artifact):
 
 # meta class used by signing tools
 class Signable(Artifact):
-    def __init__(self, chain, path, installed=False, signed=False):
-        super().__init__(chain, path, installed)
+    def __init__(self, path, installed=False, signed=False):
+        super().__init__(path, installed)
         self.signed = signed
 
 
