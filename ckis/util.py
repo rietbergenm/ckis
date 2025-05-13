@@ -36,6 +36,22 @@ def filter_class(iterable, baseclass):
     return list(l)
 
 
+def filter_attr(iterable, attr):
+    f = lambda x: hasattr(x, attr)
+
+    return filter(f, iterable)
+
+
+def filter_value(iterable, attr, value):
+    # If the attribute is not present,
+    # the specified attribute does not have the required value.
+    # Therefore, we drop it.
+
+    f = lambda x: hasattr(x, attr) and (getattr(x, attr) == value)
+
+    return filter(f, iterable)
+
+
 def search_esp_paths():
     # common locations for esp in order of likeliness.
     # it is still recommended to set it manually in config.toml
