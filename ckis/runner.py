@@ -2,9 +2,11 @@ import argparse
 import sys
 import tomllib
 
+from .chain import Chain
 from .config import load_config, sanitize_config
 from .errors import ConfigError
-from .chain import Chain
+from .persistence import store_run
+from .pruning import prune_orphans
 
 
 def handle_options():
@@ -81,6 +83,13 @@ def do_run(args, conf):
         print(chaincfg)
         c = Chain(args.kver, chaincfg)
         c.run(until = args.until)
+
+        # prune artifacts leftover by the previous run of this chain
+        # for the same kernel version
+        prune_orphans(c)
+
+        # store this run so we can use this later to prune installed artifacts
+        store_run(c)
 
 
 def fire():
