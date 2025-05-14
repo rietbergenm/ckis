@@ -22,6 +22,17 @@ def store_run(chain):
         s[chain.name] = current
 
 
+def delete_run(name: str, kver: str):
+    with shelve.open(DBPATH, 'w') as s:
+        if name in s and kver in s[name]:
+            runs = s[name]
+            runs.pop(kver)
+            s[name] = runs
+        else:
+            raise DBKeyError((
+                f"Can't remove run of chain {name} for kernel version {kver}, "
+                "as it is not in db."
+            ))
 
 
 def get_stored_run(name, kver):
