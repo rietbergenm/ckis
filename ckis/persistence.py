@@ -46,4 +46,11 @@ def get_stored_run(name, kver):
             ))
 
 
+def get_db():
+    db = {}
 
+    with shelve.open(DBPATH, 'r') as s:
+        for (key,val) in s.items():
+            db[key] = val
+
+    return db
