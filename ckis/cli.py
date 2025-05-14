@@ -41,5 +41,22 @@ def handle_options():
         default = "",
         help = "run until the specified link (globbing is supported)"
     )
-    
+
+
+    parser_prune = subparsers.add_parser("prune", help = "prune old artifacts")
+
+    parser_prune.add_argument(
+        "-c",
+        "--chain",
+        type = str,
+        action = "append",
+        help = "prune only runs for the specified chains"
+    )
+    parser_prune.add_argument(
+        "-k",
+        "--kver",
+        type = str,
+        help = ("prune all runs for this kernel version")
+    )
+
     return parser.parse_args()
