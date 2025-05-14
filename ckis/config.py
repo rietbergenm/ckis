@@ -12,6 +12,7 @@ core_opts = [
     # name      type    mand    source
     ("boot",    "dir",  False,  "core"),
     ("esp",     "dir",  False,  "core"),
+    ("keep",    "int",  False,  "core"),
     ("sbcert",  "file", False,  "core"),
     ("sbkey",   "file", False,  "core"),
 ]
@@ -55,6 +56,14 @@ def sanitize_key_value(config, opt):
                     return path
                 else:
                     raise ConfigError(f"Cannot read file '{path}'!")
+            elif mand:
+                err_key_mand(key, src)
+
+        case "int":
+            if has_key(config, key, int):
+                return config[key]
+            elif key in config:
+                raise ConfigError(f"Key {key} should be an integer!")
             elif mand:
                 err_key_mand(key, src)
         
