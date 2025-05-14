@@ -206,7 +206,7 @@ def sanitize_settings(config, options):
 
     for key, tp, mand, src in options:
         val = sanitize_key_value(config, (key, tp, mand, src))
-        if val:
+        if val != None:
             ret[key] = val
 
     return ret
