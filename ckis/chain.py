@@ -93,7 +93,11 @@ class Chain:
         self._prepare_inputs(link)
         self._prepare_config(link)
 
+        self.current_link = link
+
         ret = self._fire_link(link)
+
+        self.current_link = None
 
         # allow links to return a single item if
         # it only produces one artifact
@@ -165,17 +169,23 @@ class Chain:
 
     ######## artifact classes ##########
 
-    Config = artifacts.Config
+    def Config(chain, *args, **kwargs):
+        return artifacts.Config(chain.current_link, *args, **kwargs)
 
-    Symbols = artifacts.Symbols
+    def Symbols(chain, *args, **kwargs):
+        return artifacts.Symbols(chain.current_link, *args, **kwargs)
 
-    Initrd = artifacts.Initrd
+    def Initrd(chain, *args, **kwargs):
+        return artifacts.Initrd(chain.current_link, *args, **kwargs)
 
-    Signable = artifacts.Signable
+    def Signable(chain, *args, **kwargs):
+        return artifacts.Signable(chain.current_link, *args, **kwargs)
 
-    Kernel = artifacts.Kernel
+    def Kernel(chain, *args, **kwargs):
+        return artifacts.Kernel(chain.current_link, *args, **kwargs)
 
-    Uki = artifacts.Uki
+    def Uki(chain, *args, **kwargs):
+        return artifacts.Uki(chain.current_link, *args, **kwargs)
 
     ########### utility functions ############
     

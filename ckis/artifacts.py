@@ -15,26 +15,32 @@ class ArtifactPath:
 
 
 class Artifact:
-    path = ArtifactPath()
-
-    def __init__(self, path, installed=False):
-        self.path = path
+    def __init__(self, origin, *, installed=False, autoprune=True):
+        self.origin = origin
+        self.autoprune = autoprune
         self.installed = installed
 
+class File(Artifact):
+    path = ArtifactPath()
 
-class Config(Artifact):
+    def __init__(self, origin, path, **kwargs):
+        super().__init__(origin, **kwargs)
+        self.path = path
+
+
+class Config(File):
     pass
 
-class Symbols(Artifact):
+class Symbols(File):
     pass
 
-class Initrd(Artifact):
+class Initrd(File):
     pass
 
 # meta class used by signing tools
-class Signable(Artifact):
-    def __init__(self, path, installed=False, signed=False):
-        super().__init__(path, installed)
+class Signable(File):
+    def __init__(self, origin, path, *, signed=False, **kwargs):
+        super().__init__(origin, path, **kwargs)
         self.signed = signed
 
 
@@ -45,8 +51,6 @@ class Uki(Signable):
     pass
 
 
-
-## are we gonna use this?
 
 class ArtifactStore(UserList):
     def __init__(self, iterable=None):
