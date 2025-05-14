@@ -9,9 +9,9 @@ from .persistence import store_run
 from .pruning import prune_orphans
 
 
-def get_chains(chains, conf):
+def get_chainconfs(chains, conf):
     args_chain_names = set(chains) # don't handle the same chain twice
-    conf_chain_names = map(lambda c: c["name"], conf["chains"])
+    conf_chain_names = set(map(lambda c: c["name"], conf["chains"]))
 
     ret = []
 
@@ -28,7 +28,7 @@ def get_chains(chains, conf):
 
 def do_run(args, conf):
     if args.chain:
-        chains = get_chains(args.chain, conf)
+        chains = get_chainconfs(args.chain, conf)
     else:
         chains = conf["chains"]
 
