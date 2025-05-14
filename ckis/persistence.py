@@ -17,9 +17,9 @@ def store_run(chain):
         if not chain.name in s:
             s[chain.name] = {}
 
-        current = s[chain.name]
-        current[chain.kver] = obj
-        s[chain.name] = current
+        runs = s[chain.name]
+        runs[chain.kver] = obj
+        s[chain.name] = runs
 
 
 def delete_run(name: str, kver: str):
@@ -37,14 +37,13 @@ def delete_run(name: str, kver: str):
 
 def get_stored_run(name, kver):
     with shelve.open(DBPATH, 'r') as s:
-        if not name in s:
-            raise DBKeyError(f"Chain {name} not found in db.")
-        elif not kver in s[name]:
-            raise DBKeyError(
-                f"Chain run for kernel version {kver} not found in db."
-            )
-        else:
+        if name in s and kver in s[name]:
             return s[name][kver]
+        else:
+            raise DBKeyError((
+                f"Run of chain {name} for kernel version "
+                f"{kver} not found in db."
+            ))
 
 
 
