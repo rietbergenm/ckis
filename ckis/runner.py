@@ -1,57 +1,12 @@
-import argparse
 import sys
 import tomllib
 
 from .chain import Chain
+from .cli import handle_options
 from .config import load_config, sanitize_config
 from .errors import ConfigError
 from .persistence import store_run
 from .pruning import prune_orphans
-
-
-def handle_options():
-
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument(
-        "--config",
-        metavar = "file",
-        type = argparse.FileType(mode = 'rb'),
-        help = "configuration file to use"
-    )
-
-
-    subparsers = parser.add_subparsers(
-        title = "command",
-        dest = "cmd",
-        required = True,
-        help = "the command to run"
-    )
-    
-
-    parser_run = subparsers.add_parser("run", help = "run one or more chains")
-
-    parser_run.add_argument(
-        "kver",
-        type = str,
-        help = "kernel version to run chain for"
-    )
-    parser_run.add_argument(
-        "-c",
-        "--chain",
-        type = str,
-        action = "append",
-        help = "run only the specified chains"
-    )
-    parser_run.add_argument(
-        "-u",
-        "--until",
-        type = str,
-        default = "",
-        help = "run until the specified link (globbing is supported)"
-    )
-    
-    return parser.parse_args()
 
 
 def get_chains(chains, conf):
