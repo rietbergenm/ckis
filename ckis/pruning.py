@@ -1,5 +1,6 @@
+from . import artifacts
 from .errors import DBKeyError
-from .persistence import get_stored_run
+from .persistence import get_db, get_stored_run
 from .util import filter_value
 
 def get_orphaned_paths(c):
@@ -32,3 +33,42 @@ def prune_orphans(c):
         # don't care if the file is missing,
         # we just want it to be gone
         path.unlink(missing_ok = True)
+
+
+def prune_artifact(art):
+    if not art.autoprune:
+        mod = get_module(art.origin)
+        if hasattr(mod, "prune"):
+            mod.prune(art)
+        else:
+            raise ModuleError((
+                f"Module {art.origin} set autoprune to False, "
+                "but provides no way to prune artifacts."
+            ))
+
+
+    if isinstance(art, artifacts.File):
+        art.path.unlink(missing_ok = True)
+    else:
+        raise ModuleError(
+            f"Unable to remove unknown artifact type from link {art.origin}."
+        )
+
+
+def prune_run(chain: str, kver: str):
+    db = get_db()
+
+    if not chain in db:
+        raise DBKeyError("Can't prune a chain that is not in the database.")
+
+    runs = db[chain]
+
+    if kver in runs:
+        # prune all artifacts from this run
+        for art in runs[kver]["store"]:
+            prune_artifact(art)
+
+    else:
+        raise DBKeyError(
+            f"Requested kernel version not found in runs for chain {chain}."
+        )
